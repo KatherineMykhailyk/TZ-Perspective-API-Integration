@@ -1,6 +1,5 @@
 using System.Text.Json;
 using API.Common;
-
 public interface IAnalyzeCommentService
 {
     Task<object> Analyze(string text);
@@ -25,10 +24,10 @@ public class AnalyzeCommentService : IAnalyzeCommentService
             {
                 text = text
             },
-            languages = new[] { "en" },
+            languages = new[] { "en" }, // how to pass lang from FE ?
             requestedAttributes = new
             {
-                TOXICITY = new { }
+                TOXICITY = new {}
             }
         };
 
@@ -44,7 +43,7 @@ public class AnalyzeCommentService : IAnalyzeCommentService
                 throw new Exception($"Perspective API request failed with status code {response.StatusCode}.");
             }
             
-            var responseContent = await response.Content.ReadAsStringAsync();
+            string responseContent = await response.Content.ReadAsStringAsync();
             var perspectiveApiResponse = JsonSerializer.Deserialize<PerspectiveApiResponse>(responseContent, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
